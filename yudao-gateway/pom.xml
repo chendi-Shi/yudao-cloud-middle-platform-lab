@@ -58,6 +58,12 @@
             <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
         </dependency>
 
+        <!-- Redis 相关：网关限流使用 ReactiveStringRedisTemplate -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis-reactive</artifactId>
+        </dependency>
+
         <!-- 监控相关 -->
         <dependency>
             <groupId>cn.iocoder.cloud</groupId>

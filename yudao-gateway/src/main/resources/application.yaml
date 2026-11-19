@@ -334,3 +334,37 @@ knife4j:
 yudao:
   info:
     version: 1.0.0
+
+--- #################### 网关治理配置（限流 + 内部签名） ####################
+
+yudao:
+  gateway:
+    # ① 限流：Redis + Lua 令牌桶
+    rate-limit:
+      enabled: false # 默认关闭，通过 YUDAO_GATEWAY_RATE_LIMIT_ENABLED=true 开启
+      fail-open: true # Redis 故障时放行，保证可用性；安全优先则设为 false
+      default-qps: 100 # 默认每秒补充令牌数
+      default-capacity: 200 # 默认桶容量，即允许的突发量
+      dimension: TENANT_USER # TENANT_USER：租户+用户（未登录退化 IP）；IP：按来源 IP
+      ignore-paths:
+        - /actuator/**
+      rules: # 按顺序匹配，命中即返回；不同规则的桶互相隔离
+        - path: /admin-api/system/auth/login # 登录接口，防撞库
+          qps: 5
+          capacity: 10
+
+    # ② 内部调用签名：防止绕过网关直连服务端口
+    internal-sign:
+      enabled: false # 需与服务端 yudao.security.internal-sign.enabled 同时开启
+      secret: ${INTERNAL_SIGN_SECRET:yudao-internal-sign-secret-change-me}
+      paths:
+        - /admin-api/**
+        - /app-api/**
+
+    # ③ 灰度分流：按用户哈希决定走哪个版本，结果写入 header[version]
+    gray:
+      enabled: false # 默认关闭；开启需配合 Nacos 实例 metadata.version
+      header-name: version
+      rules:
+        - version: v2
+          percent: 20 # 20% 的流量走 v2，其余保持主版本
