@@ -1,0 +1,14 @@
+# 本机联调用：把 MySQL / Redis / Nacos 端口映射到宿主机，方便 IDEA 或 java -jar 直接连
+# 用法：docker compose -f docker-compose.yml -f docker-compose.local.yml up -d mysql redis nacos
+services:
+  mysql:
+    ports:
+      - "127.0.0.1:13306:3306"
+  redis:
+    ports:
+      - "127.0.0.1:16379:6379"
+  nacos:
+    ports:
+      - "127.0.0.1:8848:8848"
+      - "127.0.0.1:9848:9848"
+      - "127.0.0.1:18080:8080"
