@@ -1,0 +1,22 @@
+# Seata Server 2.6.0 本地演示配置（file 存储 + file 注册，不依赖 Nacos）
+server:
+  port: 17091                      # 控制台端口
+spring:
+  application:
+    name: seata-server
+  main:
+    web-application-type: none
+logging:
+  config: classpath:logback-spring.xml
+  file:
+    path: ${log.home:${user.home}/logs/seata}
+
+seata:
+  config:
+    type: file
+  registry:
+    type: file
+  store:
+    mode: file
+  server:
+    service-port: 18091            # 客户端连接的 RPC 端口（grouplist 用这个）

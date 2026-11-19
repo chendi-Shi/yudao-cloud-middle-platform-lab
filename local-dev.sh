@@ -24,6 +24,13 @@ export XXL_JOB_ENABLED=false
 export YUDAO_DEMO=false
 export YUDAO_CAPTCHA_ENABLE=false
 
+# Seata 分布式事务演示（示例库在同一个 MySQL，端口走 docker 映射的 13306）
+export YUDAO_SEATA_ORDER_URL='jdbc:mysql://127.0.0.1:13306/yudao_seata_order?useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&nullCatalogMeansCurrent=true'
+export YUDAO_SEATA_ACCOUNT_URL='jdbc:mysql://127.0.0.1:13306/yudao_seata_account?useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&nullCatalogMeansCurrent=true'
+export YUDAO_SEATA_DB_USERNAME=root
+export YUDAO_SEATA_DB_PASSWORD='Root@Yudao2026'
+export YUDAO_SEATA_SERVER_ADDR=127.0.0.1:18091
+
 # 网关治理：限流 + 内部签名（MODULE=gateway 时生效）
 export INTERNAL_SIGN_SECRET='yudao-internal-sign-secret-local'
 export YUDAO_GATEWAY_RATE_LIMIT_ENABLED=${YUDAO_GATEWAY_RATE_LIMIT_ENABLED:-true}

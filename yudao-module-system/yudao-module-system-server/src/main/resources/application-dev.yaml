@@ -192,3 +192,39 @@ justauth:
     type: REDIS
     prefix: 'social_auth_state:' # 缓存前缀，目前只对 Redis 缓存生效，默认 JUSTAUTH::STATE::
     timeout: 24h # 超时时长，目前只对 Redis 缓存生效，默认 3 分钟
+
+--- #################### 分布式事务（Seata AT 模式，示例接入） ####################
+
+spring:
+  datasource:
+    dynamic:
+      seata: true # 开启 Dynamic Datasource 的 Seata 支持
+      seata-mode: AT
+      datasource:
+        master:
+          seata: false # 主库不参与全局事务
+        slave:
+          seata: false
+        seata_order: # 示例订单库，只有 @DS("seata_order") 使用
+          url: ${YUDAO_SEATA_ORDER_URL:jdbc:mysql://127.0.0.1:3306/yudao_seata_order?useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&nullCatalogMeansCurrent=true}
+          username: ${YUDAO_SEATA_DB_USERNAME:root}
+          password: ${YUDAO_SEATA_DB_PASSWORD:}
+          seata: true
+
+seata:
+  enabled: true
+  application-id: ${spring.application.name}
+  tx-service-group: yudao_seata_demo_group
+  enable-auto-data-source-proxy: false # 数据源已由 Dynamic Datasource 代理，避免双重代理
+  client:
+    http:
+      interceptor-enabled: false # 发起方：不从 HTTP 请求头接收 XID
+  service:
+    vgroup-mapping:
+      yudao_seata_demo_group: default
+    grouplist:
+      default: ${YUDAO_SEATA_SERVER_ADDR:127.0.0.1:18091}
+  registry:
+    type: file
+  config:
+    type: file

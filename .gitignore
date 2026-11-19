@@ -8,3 +8,4 @@ target/
 script/docker-compose/.env
 script/docker-compose/web/dist/
 .flattened-pom.xml
+.chrome-profile/

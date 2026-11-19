@@ -132,3 +132,37 @@ spring:
 # 芋道配置项，设置当前项目所有自定义的配置
 yudao:
   demo: true # 开启演示模式
+
+--- #################### 分布式事务（Seata AT 模式，示例接入） ####################
+
+spring:
+  datasource:
+    dynamic:
+      seata: true # 开启 Dynamic Datasource 的 Seata 支持
+      seata-mode: AT
+      datasource:
+        master:
+          seata: false # 主库不参与全局事务
+        slave:
+          seata: false
+        seata_account: # 示例订单库，只有 @DS("seata_account") 使用
+          url: ${YUDAO_SEATA_ACCOUNT_URL:jdbc:mysql://127.0.0.1:3306/yudao_seata_account?useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&nullCatalogMeansCurrent=true}
+          username: ${YUDAO_SEATA_DB_USERNAME:root}
+          password: ${YUDAO_SEATA_DB_PASSWORD:}
+          seata: true
+
+seata:
+  enabled: true
+  application-id: ${spring.application.name}
+  tx-service-group: yudao_seata_demo_group
+  enable-auto-data-source-proxy: false # 数据源已由 Dynamic Datasource 代理，避免双重代理
+  # 参与方：保持 interceptor-enabled 默认 true，由 Seata 自带 HTTP 拦截器绑定请求头 TX_XID
+  service:
+    vgroup-mapping:
+      yudao_seata_demo_group: default
+    grouplist:
+      default: ${YUDAO_SEATA_SERVER_ADDR:127.0.0.1:18091}
+  registry:
+    type: file
+  config:
+    type: file
