@@ -8,6 +8,9 @@
 **上游项目**：[YunaiV/yudao-cloud](https://github.com/YunaiV/yudao-cloud)（19.8k★，MIT License，Java 17 + Spring Boot 3.5 + Spring Cloud Alibaba）
 **本仓库做的事**：不改业务、不重写框架，只在网关层和服务框架层做 4 个可度量的改造，并沉淀成文档。
 
+> 📖 想先看**过程**（选题、踩过的 20 个坑、每个坑怎么解决）？→ [docs/00-项目全历程](docs/00-项目全历程.md)
+> 🔍 想看**选型推导**（为什么 A 不用 B）？→ [docs/01](docs/01-网关统一接入-设计与选型.md) 和 [docs/03](docs/03-Seata分布式事务.md)
+
 ---
 
 ## 一、做了什么
@@ -140,6 +143,7 @@ curl -X POST http://127.0.0.1:48080/admin-api/system/auth/login \
 
 | 文档 | 内容 |
 | --- | --- |
+| [docs/00-项目全历程](docs/00-项目全历程.md) | 12 个阶段的时间线 + 20 个问题总表 + 决策总表 + 计划偏差 |
 | [docs/01-网关统一接入-设计与选型](docs/01-网关统一接入-设计与选型.md) | 全景 + 15 组 A/B 选型取舍 |
 | [docs/02-压测报告](docs/02-压测报告.md) | 限流压测的原始数据与陷阱 |
 | [docs/03-Seata分布式事务](docs/03-Seata分布式事务.md) | AT 原理、AT/TCC/消息表选型、4 个坑 |
