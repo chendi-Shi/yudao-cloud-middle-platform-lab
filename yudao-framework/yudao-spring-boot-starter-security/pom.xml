@@ -55,6 +55,13 @@
         </dependency>
 
         <!-- 工具类相关 -->
+        <!-- Redis：仅用于「内部调用签名」的 nonce 防重放，optional 避免强制所有使用方引入 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+            <optional>true</optional>
+        </dependency>
+
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
