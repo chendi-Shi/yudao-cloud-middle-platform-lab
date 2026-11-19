@@ -37,4 +37,16 @@ public class DemoSeataTradeService {
         demoSeataAccountApi.deductBalance(userId, amount).getCheckedData();
     }
 
+
+    /**
+     * 对照组：执行与 {@link #placeOrder} 完全相同的两步操作，但【不开启】全局事务
+     *
+     * 用来隔离「AT 的开销」：两个接口的 SQL、RPC 完全一样，唯一差别是有没有 @GlobalTransactional。
+     * 注意，这个方法不保证一致性（第二步失败时第一步不会回滚），仅用于压测对照。
+     */
+    public void placeOrderWithoutGlobalTransaction(Long orderId, Long userId, Integer amount) {
+        demoSeataOrderService.createOrder(orderId, userId, amount);
+        demoSeataAccountApi.deductBalance(userId, amount).getCheckedData();
+    }
+
 }

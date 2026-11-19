@@ -42,4 +42,14 @@ public class DemoSeataTradeController {
         return success(true);
     }
 
+
+    @PostMapping("/place-order-no-tx")
+    @Operation(summary = "对照实验：同样的两步操作，但不开启全局事务（仅用于压测对比）")
+    public CommonResult<Boolean> placeOrderWithoutGlobalTransaction(@RequestParam("orderId") Long orderId,
+                                                                    @RequestParam("userId") Long userId,
+                                                                    @RequestParam("amount") Integer amount) {
+        demoSeataTradeService.placeOrderWithoutGlobalTransaction(orderId, userId, amount);
+        return success(true);
+    }
+
 }
